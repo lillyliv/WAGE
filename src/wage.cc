@@ -5,12 +5,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <thread>
 
 #include "defs.hh"
-#include "render/x.cc"
+#include "render/render.cc"
+
+#ifdef USE_X_SERVER // dont include files we dont need to possibly reduce binary sizes on some (unoptimized) compilers
+    #include "render/x.cc"
+#endif
+
+#ifdef USE_WAYLAND
+    #include "render/way.cc"
+#endif
 
 int main(int argc, char** argv) {
-    XINIT();
-    XLOOP();
-    XCLOSE();
+
+    #ifdef USE_X_SERVER
+        XINIT();
+        XLOOP();
+        XCLOSE();
+    #endif
+
+    #ifdef USE_WAYLAND
+        // please add code here
+    #endif
+
+    exit(0);
 }
